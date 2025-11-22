@@ -66,10 +66,10 @@ and $Y$ are independent.
 ``` r
 # Dependency of Species on other variables
 dgc <- dgcor(Species ~ ., data = iris)
-dotchart(sort(dgc), main = "Predictability of Species")
+dotchart(sort(dgc), main = "Dependency of Species")
 ```
 
-<img src="man/figures/README-example_iris_pscore-1.svg" width="100%" />
+<img src="man/figures/README-example_iris_dgcor-1.svg" width="100%" />
 
 With $r_g$ as the generalized correlation between $X$ and $Y$, we can
 define a dissimilarity measure:

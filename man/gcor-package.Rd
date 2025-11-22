@@ -63,7 +63,7 @@ gcor(iris)
 
 # Dependency of Species on other variables
 dgc <- dgcor(Species ~ ., data = iris)
-dotchart(sort(dgc), main = "Predictability of Species")
+dotchart(sort(dgc), main = "Dependency of Species")
 
 # Clustering
 gd <- gdis(iris)

@@ -50,6 +50,6 @@
 <text x='300.64' y='312.48' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='23.36px' lengthAdjust='spacingAndGlyphs'>0.70</text>
 <text x='405.45' y='312.48' text-anchor='middle' style='font-size: 12.00px; font-family: "Arial";' textLength='23.36px' lengthAdjust='spacingAndGlyphs'>0.75</text>
 <polygon points='105.47,286.56 473.76,286.56 473.76,59.04 105.47,59.04 ' style='stroke-width: 0.75;' />
-<text x='289.62' y='34.70' text-anchor='middle' style='font-size: 14.40px; font-weight: bold; font-family: "Arial";' textLength='166.37px' lengthAdjust='spacingAndGlyphs'>Predictability of Species</text>
+<text x='289.62' y='34.70' text-anchor='middle' style='font-size: 14.40px; font-weight: bold; font-family: "Arial";' textLength='161.58px' lengthAdjust='spacingAndGlyphs'>Dependency of Species</text>
 </g>
 </svg>
