@@ -63,10 +63,10 @@ It also takes values in $[0,1]$, reaching $1$ when $Y$ is completely dependent
 on $X$ (i.e., when the conditional distribution $f(Y \mid X)$ is a one-point distribution)
 and $0$ when $X$ and $Y$ are independent.
 
-```{r example_iris_pscore}
+```{r example_iris_dgcor}
 # Dependency of Species on other variables
 dgc <- dgcor(Species ~ ., data = iris)
-dotchart(sort(dgc), main = "Predictability of Species")
+dotchart(sort(dgc), main = "Dependency of Species")
 ```
 
 With $r_g$ as the generalized correlation between $X$ and $Y$, we can define
