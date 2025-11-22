@@ -3,8 +3,8 @@
 #' @description Estimate measures based on mutual dependency, which includes:
 #' \itemize{
 #'   \item{Generalized correlation measure (`gcor`)}
+#'   \item{Directed generalized correlation measure (`dgcor`)}
 #'   \item{Dissimilarity between variables (`gdis`)}
-#'   \item{Predictability score (`pscore`)}
 #' }
 #'
 #' @param x a vector, matrix, data frame or formula. If formula, `data` should be specified.
@@ -32,7 +32,7 @@
 #' @param ... additional arguments (`diag` and `upper`) passed to `as.dist` function.
 #' See \code{\link{as.dist}} for details.
 #'
-#' @return For `gcor` and `pscore`, a numeric matrix is returned (or a vector if `simplify = TRUE`).
+#' @return For `gcor` and `dgcor`, a numeric matrix is returned (or a vector if `simplify = TRUE`).
 #' For `gdis`, an object of class `"dist"` is returned.
 #'
 #' @references
@@ -43,9 +43,9 @@
 #' # Generalized correlation measure
 #' gcor(iris)
 #'
-#' # Predictability of Species from other variables
-#' ps <- pscore(Species ~ ., data = iris)
-#' dotchart(sort(ps), main = "Predictability of Species")
+#' # Dependency of Species on other variables
+#' dgc <- dgcor(Species ~ ., data = iris)
+#' dotchart(sort(dgc), main = "Predictability of Species")
 #'
 #' # Clustering
 #' gd <- gdis(iris)
@@ -63,9 +63,9 @@
 #' @importFrom stats as.dist complete.cases model.frame model.response setNames
 NULL
 
-# @param measure a character specifying the type of measure, one of `"cor"`, `"dist"`, `"pred"`.
+# @param measure a character specifying the type of measure, one of `"cor"`, `"dist"`, `"dgcor"`.
 # `gcor` is a wrapper for `mdep` with `measure = "cor"`.
-# Similarly, `gdis` wraps `measure = "dist"`, and `pscore` wraps `measure = "pred"`.
+# Similarly, `gdis` wraps `measure = "dist"`, and `dgcor` wraps `measure = "dgcor"`.
 # @param xname a character to be used as the name of `x`, when x is an atomic vector.
 # @param yname a character used as the name of `y` (same as `xname` for `x`).
 mdep <- function(x, y = NULL, k = NULL, data = NULL, simplify = FALSE, dropNA = "none",
@@ -74,7 +74,7 @@ mdep <- function(x, y = NULL, k = NULL, data = NULL, simplify = FALSE, dropNA = 
                  ...
                  ) {
   IS_XY_SYNMETRIC <- FALSE
-  MEASURES <- c("cor", "dist", "pred")
+  MEASURES <- c("cor", "dist", "dgcor")
   DROP_NA <- c("none", "casewise", "pairwise")
   xx <- yy <- kk <- ret <- NULL
 
@@ -174,9 +174,9 @@ mdep <- function(x, y = NULL, k = NULL, data = NULL, simplify = FALSE, dropNA = 
         } else if(measure == "dist") {
           ret[i, j] <- if(kk == 1) 0 else sqrt(1 - r2 / (1 - 1/kk))
           if(IS_XY_SYNMETRIC) ret[j, i] <- ret[i, j]
-        } else if(measure == "pred") {
+        } else if(measure == "dgcor") {
           # If ky == 1, y is constant and completely dependent on any random variable.
-          # So pscore(x,y) = 1.
+          # So dgcor(x,y) = 1.
           ret[i, j] <- if(ky == 1) 1 else sqrt(r2 / (1 - 1/ky))
           if(IS_XY_SYNMETRIC) ret[j, i] <- if(kx == 1) 1 else sqrt(r2 / (1 - 1/kx))
         }
@@ -208,6 +208,13 @@ gcor <- function(x, y = NULL, k = NULL, data = NULL, simplify = TRUE, dropNA = "
 
 #' @rdname gcor-package
 #' @export
+dgcor <- function(x, y = NULL, k = NULL, data = NULL, simplify = TRUE, dropNA = "none") {
+  mdep(x = x, y = y, k = k, data = data, simplify = simplify, dropNA = dropNA, measure = "dgcor",
+       xname = deparse1(substitute(x)), yname = deparse1(substitute(y)))
+}
+
+#' @rdname gcor-package
+#' @export
 gdis <- function(x, k = NULL, dropNA = "none", ...) {
   if(!is.matrix(x) && !is.data.frame(x)) {
     stop("x should be a matrix or data frame.")
@@ -217,9 +224,3 @@ gdis <- function(x, k = NULL, dropNA = "none", ...) {
        xname = deparse1(substitute(x)), yname = deparse1(substitute(y)), ...)
 }
 
-#' @rdname gcor-package
-#' @export
-pscore <- function(x, y = NULL, k = NULL, data = NULL, simplify = TRUE, dropNA = "none") {
-  mdep(x = x, y = y, k = k, data = data, simplify = simplify, dropNA = dropNA, measure = "pred",
-       xname = deparse1(substitute(x)), yname = deparse1(substitute(y)))
-}
