@@ -3,15 +3,15 @@
 \name{gcor-package}
 \alias{gcor-package}
 \alias{gcor}
+\alias{dgcor}
 \alias{gdis}
-\alias{pscore}
 \title{Estimate generalized correlation and related measures}
 \usage{
 gcor(x, y = NULL, k = NULL, data = NULL, simplify = TRUE, dropNA = "none")
 
-gdis(x, k = NULL, dropNA = "none", ...)
+dgcor(x, y = NULL, k = NULL, data = NULL, simplify = TRUE, dropNA = "none")
 
-pscore(x, y = NULL, k = NULL, data = NULL, simplify = TRUE, dropNA = "none")
+gdis(x, k = NULL, dropNA = "none", ...)
 }
 \arguments{
 \item{x}{a vector, matrix, data frame or formula. If formula, \code{data} should be specified.
@@ -46,24 +46,24 @@ Similar to \code{use = "pairwise.complete.obs"} in \code{\link{cor}}.}
 See \code{\link{as.dist}} for details.}
 }
 \value{
-For \code{gcor} and \code{pscore}, a numeric matrix is returned (or a vector if \code{simplify = TRUE}).
+For \code{gcor} and \code{dgcor}, a numeric matrix is returned (or a vector if \code{simplify = TRUE}).
 For \code{gdis}, an object of class \code{"dist"} is returned.
 }
 \description{
 Estimate measures based on mutual dependency, which includes:
 \itemize{
 \item{Generalized correlation measure (\code{gcor})}
+\item{Directed generalized correlation measure (\code{dgcor})}
 \item{Dissimilarity between variables (\code{gdis})}
-\item{Predictability score (\code{pscore})}
 }
 }
 \examples{
 # Generalized correlation measure
 gcor(iris)
 
-# Predictability of Species from other variables
-ps <- pscore(Species ~ ., data = iris)
-dotchart(sort(ps), main = "Predictability of Species")
+# Dependency of Species on other variables
+dgc <- dgcor(Species ~ ., data = iris)
+dotchart(sort(dgc), main = "Predictability of Species")
 
 # Clustering
 gd <- gdis(iris)
