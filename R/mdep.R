@@ -133,13 +133,24 @@ mdep <- function(x, y = NULL, k = NULL, data = NULL, simplify = FALSE, dropNA = 
     xx <- subset(xx, cc)
     yy <- subset(yy, cc)
   }
-  
+
   stopifnot(is.null(k) || length(k) == 1)
 
+  # discretize all columns
+  for(i in seq_len(ncol(xx))) {
+    xx[,i] <- .div(xx[,i], k)
+  }
+
+  for(j in seq_len(ncol(yy))) {
+    yy[,j] <- .div(yy[,j], k)
+  }
+
+  # initialize
   ret <- matrix(rep(NA_real_, ncol(xx) * ncol(yy)),
                 nrow = ncol(xx), ncol = ncol(yy),
                 dimnames = list(names(xx), names(yy)))
-
+  
+  # loop
   for(i in seq_len(ncol(xx))) {
     for(j in seq_len(ncol(yy))) {
       if(IS_XY_SYNMETRIC && i > j) {

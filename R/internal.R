@@ -3,7 +3,7 @@
   # default selection of k (10-by-2 rule)
   if(is.null(k)) k <- pmax(2, floor(length(x)^log10(2)/2))
   
-  if(length(unique(x)) <= k) {
+  if(!is.numeric(x) || length(unique(x)) <= k) {
     ret <- as.factor(x)
   } else {
     qt <- quantile(x, probs = seq(0, 1, length.out = k + 1), na.rm = TRUE)
@@ -34,7 +34,7 @@
     kx <- length(nx)
     ky <- length(ny)
   }
-  
+
   ret <- list(estimate = phi, kx = kx, ky = ky)
 
   return(ret)
