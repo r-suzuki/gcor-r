@@ -1,7 +1,15 @@
+# discretize (numeric) values
+# TODO: Consider treating NA and NaN differently.
+#       It may not be natural in R since is.na(NaN) is TRUE
+#       and NaNs are omitted by na.omit()
 #' @importFrom stats quantile
+#' @importFrom stats na.omit
 .div <- function(x, k) {
+
   # default selection of k (10-by-2 rule)
-  if(is.null(k)) k <- pmax(2, floor(length(x)^log10(2)/2))
+  if(is.numeric(x) && is.null(k)) {
+    k <- pmax(2, floor(length(na.omit(x))^log10(2)/2))
+  }
   
   if(!is.numeric(x) || length(unique(x)) <= k) {
     ret <- as.factor(x)
