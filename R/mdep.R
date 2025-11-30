@@ -133,10 +133,8 @@ mdep <- function(x, y = NULL, k = NULL, data = NULL, simplify = FALSE, dropNA = 
     xx <- subset(xx, cc)
     yy <- subset(yy, cc)
   }
-
-  # default selection of k (10-by-2 rule)
-  if(is.null(k)) k <- pmax(2, floor(nrow(xx)^log10(2)/2))
-  stopifnot(length(k) == 1)
+  
+  stopifnot(is.null(k) || length(k) == 1)
 
   ret <- matrix(rep(NA_real_, ncol(xx) * ncol(yy)),
                 nrow = ncol(xx), ncol = ncol(yy),
