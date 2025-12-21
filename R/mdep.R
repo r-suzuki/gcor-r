@@ -148,6 +148,11 @@ mdep <- function(x, y = NULL, k = NULL, data = NULL,
     yy[,j] <- .div(yy[,j], k, max_levels)
   }
 
+  if(any(!sapply(xx, is.factor)) || any(!sapply(yy, is.factor))) {
+    warning("NA may be returned for non-numeric columns with too many levels. Try setting 'max_levels' argument.",
+    call. = FALSE)
+  }
+
   # initialize
   ret <- matrix(rep(NA_real_, ncol(xx) * ncol(yy)),
                 nrow = ncol(xx), ncol = ncol(yy),
@@ -168,7 +173,7 @@ mdep <- function(x, y = NULL, k = NULL, data = NULL,
         # phi_ij should be greater or equal to 1, but estimated values
         # with some approximation could be less than 1. It is adjusted here.
         if(!is.na(phi_ij) && phi_ij < 1) {
-          warning("Estimated mutual dependency < 1; adjusted to 1.")
+          warning("Estimated mutual dependency < 1; adjusted to 1.", .call = FALSE)
           phi_ij <- 1
         }
 

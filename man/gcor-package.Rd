@@ -7,11 +7,27 @@
 \alias{gdis}
 \title{Estimate generalized correlation and related measures}
 \usage{
-gcor(x, y = NULL, k = NULL, data = NULL, simplify = TRUE, dropNA = "none")
+gcor(
+  x,
+  y = NULL,
+  k = NULL,
+  data = NULL,
+  max_levels = 100,
+  simplify = TRUE,
+  dropNA = "none"
+)
 
-dgcor(x, y = NULL, k = NULL, data = NULL, simplify = TRUE, dropNA = "none")
+dgcor(
+  x,
+  y = NULL,
+  k = NULL,
+  data = NULL,
+  max_levels = 100,
+  simplify = TRUE,
+  dropNA = "none"
+)
 
-gdis(x, k = NULL, dropNA = "none", ...)
+gdis(x, k = NULL, max_levels = 100, dropNA = "none", ...)
 }
 \arguments{
 \item{x}{a vector, matrix, data frame or formula. If formula, \code{data} should be specified.
@@ -24,6 +40,9 @@ Numerical data are divided into \code{k} groups using \code{k}-quantiles.
 If \code{NULL}, it is determined automatically.}
 
 \item{data}{\code{NULL} (default) or a data frame. Required if \code{x} is a formula.}
+
+\item{max_levels}{an integer specifying the maximum number of levels
+allowed when converting non-numeric variables to factors.}
 
 \item{simplify}{a logical. If \code{TRUE}, the returned value is coerced to
 a vector when one of its dimensions is one.}

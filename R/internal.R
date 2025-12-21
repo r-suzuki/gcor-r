@@ -32,11 +32,17 @@
   stopifnot(length(x) == length(y))
   n <- length(x)
 
-  # TODO: if(!is.factor(x) || !is.factor(y)) return NULL or NA list
-
   if(n == 0) {
     phi <- NA_real_
     kx <- ky <- 0L
+  } else if(!is.factor(x) || !is.factor(y)) {
+    # .div returns non-factor vector is length(unique(.)) > max_levels.
+    # In such a case we return NA unless x and y are identical,
+    # with length(unique(.)) as k where NAs are counted as one level.
+    kx <- length(unique(x))
+    ky <- length(unique(y))
+
+    phi <- if(identical(x, y)) kx else NA_real_
   } else {
     # drop.unused.levels = TRUE is required to avoid marginal probability 0
     nn <- xtabs(~ x + y, addNA = useNA, drop.unused.levels = TRUE)
