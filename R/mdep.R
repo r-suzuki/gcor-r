@@ -228,7 +228,7 @@ gcor <- function(x, y = NULL, k = NULL, data = NULL,
 #' @rdname gcor-package
 #' @export
 dgcor <- function(x, y = NULL, k = NULL, data = NULL,
-                 max_levels = 100, simplify = TRUE, dropNA = "none") {
+                  max_levels = 100, simplify = TRUE, dropNA = "none") {
   mdep(x = x, y = y, k = k, data = data, max_levels = max_levels,
        simplify = simplify, dropNA = dropNA, measure = "dgcor",
        xname = deparse1(substitute(x)), yname = deparse1(substitute(y)))
