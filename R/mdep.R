@@ -14,6 +14,8 @@
 #' Numerical data are divided into `k` groups using `k`-quantiles.
 #' If `NULL`, it is determined automatically.
 #' @param data `NULL` (default) or a data frame. Required if `x` is a formula.
+#' @param max_levels an integer specifying the maximum number of levels
+#' allowed when converting non-numeric variables to factors.
 #' @param simplify a logical. If `TRUE`, the returned value is coerced to
 #' a vector when one of its dimensions is one.
 #' @param dropNA a character specifying how to handle missing values.
@@ -68,7 +70,8 @@ NULL
 # Similarly, `gdis` wraps `measure = "dist"`, and `dgcor` wraps `measure = "dgcor"`.
 # @param xname a character to be used as the name of `x`, when x is an atomic vector.
 # @param yname a character used as the name of `y` (same as `xname` for `x`).
-mdep <- function(x, y = NULL, k = NULL, data = NULL, simplify = FALSE, dropNA = "none",
+mdep <- function(x, y = NULL, k = NULL, data = NULL,
+                 max_levels, simplify = FALSE, dropNA = "none",
                  measure,
                  xname = deparse1(substitute(x)), yname = deparse1(substitute(y)),
                  ...
@@ -138,11 +141,16 @@ mdep <- function(x, y = NULL, k = NULL, data = NULL, simplify = FALSE, dropNA = 
 
   # discretize all columns
   for(i in seq_len(ncol(xx))) {
-    xx[,i] <- .div(xx[,i], k)
+    xx[,i] <- .div(xx[,i], k, max_levels)
   }
 
   for(j in seq_len(ncol(yy))) {
-    yy[,j] <- .div(yy[,j], k)
+    yy[,j] <- .div(yy[,j], k, max_levels)
+  }
+
+  if(any(!sapply(xx, is.factor)) || any(!sapply(yy, is.factor))) {
+    warning("NA may be returned for non-numeric columns with too many levels. Try setting 'max_levels' argument.",
+    call. = FALSE)
   }
 
   # initialize
@@ -165,7 +173,7 @@ mdep <- function(x, y = NULL, k = NULL, data = NULL, simplify = FALSE, dropNA = 
         # phi_ij should be greater or equal to 1, but estimated values
         # with some approximation could be less than 1. It is adjusted here.
         if(!is.na(phi_ij) && phi_ij < 1) {
-          warning("Estimated mutual dependency < 1; adjusted to 1.")
+          warning("Estimated mutual dependency < 1; adjusted to 1.", .call = FALSE)
           phi_ij <- 1
         }
 
@@ -210,26 +218,31 @@ mdep <- function(x, y = NULL, k = NULL, data = NULL, simplify = FALSE, dropNA = 
 
 #' @rdname gcor-package
 #' @export
-gcor <- function(x, y = NULL, k = NULL, data = NULL, simplify = TRUE, dropNA = "none") {
-  mdep(x = x, y = y, k = k, data = data, simplify = simplify, dropNA = dropNA, measure = "cor",
+gcor <- function(x, y = NULL, k = NULL, data = NULL,
+                 max_levels = 100, simplify = TRUE, dropNA = "none") {
+  mdep(x = x, y = y, k = k, data = data, max_levels = max_levels,
+       simplify = simplify, dropNA = dropNA, measure = "cor",
        xname = deparse1(substitute(x)), yname = deparse1(substitute(y)))
 }
 
 #' @rdname gcor-package
 #' @export
-dgcor <- function(x, y = NULL, k = NULL, data = NULL, simplify = TRUE, dropNA = "none") {
-  mdep(x = x, y = y, k = k, data = data, simplify = simplify, dropNA = dropNA, measure = "dgcor",
+dgcor <- function(x, y = NULL, k = NULL, data = NULL,
+                  max_levels = 100, simplify = TRUE, dropNA = "none") {
+  mdep(x = x, y = y, k = k, data = data, max_levels = max_levels,
+       simplify = simplify, dropNA = dropNA, measure = "dgcor",
        xname = deparse1(substitute(x)), yname = deparse1(substitute(y)))
 }
 
 #' @rdname gcor-package
 #' @export
-gdis <- function(x, k = NULL, dropNA = "none", ...) {
+gdis <- function(x, k = NULL, max_levels = 100, dropNA = "none", ...) {
   if(!is.matrix(x) && !is.data.frame(x)) {
     stop("x should be a matrix or data frame.")
   }
 
-  mdep(x = x, y = NULL, k = k, data = data, dropNA = dropNA, measure = "dist",
+  mdep(x = x, y = NULL, k = k, max_levels = max_levels,
+       dropNA = dropNA, measure = "dist",
        xname = deparse1(substitute(x)), yname = deparse1(substitute(y)), ...)
 }
 
