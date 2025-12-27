@@ -10,24 +10,24 @@
 gcor(
   x,
   y = NULL,
-  k = NULL,
   data = NULL,
+  dropNA = "none",
+  k = NULL,
   max_levels = 100,
-  simplify = TRUE,
-  dropNA = "none"
+  simplify = TRUE
 )
 
 dgcor(
   x,
   y = NULL,
-  k = NULL,
   data = NULL,
+  dropNA = "none",
+  k = NULL,
   max_levels = 100,
-  simplify = TRUE,
-  dropNA = "none"
+  simplify = TRUE
 )
 
-gdis(x, k = NULL, max_levels = 100, dropNA = "none", ...)
+gdis(x, dropNA = "none", k = NULL, max_levels = 100, ...)
 }
 \arguments{
 \item{x}{a vector, matrix, data frame or formula. If formula, \code{data} should be specified.
@@ -35,17 +35,7 @@ gdis(x, k = NULL, max_levels = 100, dropNA = "none", ...)
 
 \item{y}{\code{NULL} (default) or a vector, matrix or data frame with compatible dimensions to \code{x}.}
 
-\item{k}{\code{NULL} (default) or an integer specifying the number of groups for discretization.
-Numerical data are divided into \code{k} groups using \code{k}-quantiles.
-If \code{NULL}, it is determined automatically.}
-
 \item{data}{\code{NULL} (default) or a data frame. Required if \code{x} is a formula.}
-
-\item{max_levels}{an integer specifying the maximum number of levels
-allowed when converting non-numeric variables to factors.}
-
-\item{simplify}{a logical. If \code{TRUE}, the returned value is coerced to
-a vector when one of its dimensions is one.}
 
 \item{dropNA}{a character specifying how to handle missing values.
 It should be one of the following:
@@ -60,6 +50,16 @@ This process is applied per pair; the same row is not removed with another pair 
 if both w[i] and z[i] are not missing.
 Similar to \code{use = "pairwise.complete.obs"} in \code{\link{cor}}.}
 }}
+
+\item{k}{\code{NULL} (default) or an integer specifying the number of groups for discretization.
+Numerical data are divided into \code{k} groups using \code{k}-quantiles.
+If \code{NULL}, it is determined automatically.}
+
+\item{max_levels}{an integer specifying the maximum number of levels
+allowed when converting non-numeric variables to factors.}
+
+\item{simplify}{a logical. If \code{TRUE}, the returned value is coerced to
+a vector when one of its dimensions is one.}
 
 \item{...}{additional arguments (\code{diag} and \code{upper}) passed to \code{as.dist} function.
 See \code{\link{as.dist}} for details.}
