@@ -10,14 +10,7 @@
 #' @param x a vector, matrix, data frame or formula. If formula, `data` should be specified.
 #' `gdis` requires a matrix or data frame.
 #' @param y `NULL` (default) or a vector, matrix or data frame with compatible dimensions to `x`.
-#' @param k `NULL` (default) or an integer specifying the number of groups for discretization.
-#' Numerical data are divided into `k` groups using `k`-quantiles.
-#' If `NULL`, it is determined automatically.
 #' @param data `NULL` (default) or a data frame. Required if `x` is a formula.
-#' @param max_levels an integer specifying the maximum number of levels
-#' allowed when converting non-numeric variables to factors.
-#' @param simplify a logical. If `TRUE`, the returned value is coerced to
-#' a vector when one of its dimensions is one.
 #' @param dropNA a character specifying how to handle missing values.
 #' It should be one of the following:
 #' \describe{
@@ -31,6 +24,13 @@
 #' if both w\[i\] and z\[i\] are not missing.
 #' Similar to `use = "pairwise.complete.obs"` in \code{\link{cor}}.}
 #' }
+#' @param k `NULL` (default) or an integer specifying the number of groups for discretization.
+#' Numerical data are divided into `k` groups using `k`-quantiles.
+#' If `NULL`, it is determined automatically.
+#' @param max_levels an integer specifying the maximum number of levels
+#' allowed when converting non-numeric variables to factors.
+#' @param simplify a logical. If `TRUE`, the returned value is coerced to
+#' a vector when one of its dimensions is one.
 #' @param ... additional arguments (`diag` and `upper`) passed to `as.dist` function.
 #' See \code{\link{as.dist}} for details.
 #'
@@ -70,8 +70,8 @@ NULL
 # Similarly, `gdis` wraps `measure = "dist"`, and `dgcor` wraps `measure = "dgcor"`.
 # @param xname a character to be used as the name of `x`, when x is an atomic vector.
 # @param yname a character used as the name of `y` (same as `xname` for `x`).
-mdep <- function(x, y = NULL, k = NULL, data = NULL,
-                 max_levels, simplify = FALSE, dropNA = "none",
+mdep <- function(x, y = NULL, data = NULL,
+                 dropNA = "none", k = NULL, max_levels, simplify = FALSE,
                  measure,
                  xname = deparse1(substitute(x)), yname = deparse1(substitute(y)),
                  ...
@@ -218,8 +218,8 @@ mdep <- function(x, y = NULL, k = NULL, data = NULL,
 
 #' @rdname gcor-package
 #' @export
-gcor <- function(x, y = NULL, k = NULL, data = NULL,
-                 max_levels = 100, simplify = TRUE, dropNA = "none") {
+gcor <- function(x, y = NULL, data = NULL, dropNA = "none",
+                 k = NULL, max_levels = 100, simplify = TRUE) {
   mdep(x = x, y = y, k = k, data = data, max_levels = max_levels,
        simplify = simplify, dropNA = dropNA, measure = "cor",
        xname = deparse1(substitute(x)), yname = deparse1(substitute(y)))
@@ -227,8 +227,8 @@ gcor <- function(x, y = NULL, k = NULL, data = NULL,
 
 #' @rdname gcor-package
 #' @export
-dgcor <- function(x, y = NULL, k = NULL, data = NULL,
-                  max_levels = 100, simplify = TRUE, dropNA = "none") {
+dgcor <- function(x, y = NULL, data = NULL, dropNA = "none",
+                  k = NULL, max_levels = 100, simplify = TRUE) {
   mdep(x = x, y = y, k = k, data = data, max_levels = max_levels,
        simplify = simplify, dropNA = dropNA, measure = "dgcor",
        xname = deparse1(substitute(x)), yname = deparse1(substitute(y)))
@@ -236,7 +236,7 @@ dgcor <- function(x, y = NULL, k = NULL, data = NULL,
 
 #' @rdname gcor-package
 #' @export
-gdis <- function(x, k = NULL, max_levels = 100, dropNA = "none", ...) {
+gdis <- function(x, dropNA = "none", k = NULL, max_levels = 100, ...) {
   if(!is.matrix(x) && !is.data.frame(x)) {
     stop("x should be a matrix or data frame.")
   }
