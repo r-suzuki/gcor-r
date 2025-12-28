@@ -13,7 +13,9 @@
     }
     
     if(length(unique(x)) > k) {
-      qt <- quantile(x, probs = seq(0, 1, length.out = k + 1), na.rm = TRUE)
+      # Set type = 1 to use the empirical distribution function
+      qt <- quantile(x, probs = seq(0, 1, length.out = k + 1),
+                     na.rm = TRUE, type = 1)
       ret <- cut(x, breaks = unique(qt), include.lowest = TRUE)
     } else {
       ret <- as.factor(x)
