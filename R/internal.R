@@ -2,6 +2,8 @@
 # TODO: Consider treating NA and NaN differently.
 #       It may not be natural in R since is.na(NaN) is TRUE
 #       and NaNs are omitted by na.omit()
+# TODO: Discretize date/datetime.
+#       Fixes will be needed in some documents
 #' @importFrom stats quantile
 #' @importFrom stats na.omit
 .div <- function(x, k, max_levels) {
