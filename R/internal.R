@@ -2,7 +2,7 @@
 # TODO: Consider treating NA and NaN differently.
 #       It may not be natural in R since is.na(NaN) is TRUE
 #       and NaNs are omitted by na.omit()
-# TODO: Discretize date/datetime.
+# TODO: Discretize date/datetime (Date/POSIXct/POSIXlt/difftime).
 #       Fixes will be needed in some documents
 #' @importFrom stats quantile
 #' @importFrom stats na.omit
