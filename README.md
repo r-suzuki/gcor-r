@@ -1,5 +1,5 @@
 
-# gcor-r
+# `gcor` package for R
 
 <!-- badges: start -->
 
