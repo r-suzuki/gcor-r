@@ -23,14 +23,14 @@ You can install the development version of `gcor` from
 
 ``` r
 # install.packages("pak")
-pak::pak("r-suzuki/gcor")
+pak::pak("r-suzuki/gcor-r")
 ```
 
 or with `devtools`:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("r-suzuki/gcor")
+devtools::install_github("r-suzuki/gcor-r")
 ```
 
 ## Example
