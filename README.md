@@ -1,5 +1,5 @@
 
-# gcor
+# gcor-r
 
 <!-- badges: start -->
 

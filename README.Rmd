@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 pkgload::load_all(".")
 ```
 
-# gcor
+# gcor-r
 
 <!-- badges: start -->
 <!-- badges: end -->
